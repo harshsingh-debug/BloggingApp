@@ -1,0 +1,24 @@
+
+
+java:S1192C"_Define a constant instead of duplicating this literal "Could not fetch data for id : " 3 times.(ïç”øıÿÿÿÿ8·°®ÄÀ2
+v
+java:S11922"TDefine a constant instead of duplicating this literal "User does not exist" 3 times.(àœêƒüÿÿÿÿ8Ë¬ÄÀ2
+€
+java:S1488i"cImmediately return this expression instead of assigning it to the temporary variable "userDtoList".(ÛÒ•ü8Ë¬ÄÀ2
+L	java:S106$"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8®Ë¬ÄÀ2
+L	java:S106'"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8®Ë¬ÄÀ2
+L	java:S106B"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¾Ë¬ÄÀ2
+L	java:S106E"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¾Ë¬ÄÀ2
+L	java:S106S"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¾Ë¬ÄÀ2
+L	java:S106V"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¾Ë¬ÄÀ2
+L	java:S106Y"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¾Ë¬ÄÀ2
+`
+java:S1155b">Use isEmpty() to check whether the collection is empty or not.(àÓü’ùÿÿÿÿ8¾Ë¬ÄÀ2
+X	java:S125e"<This block of commented-out lines of code should be removed.(äÊ™ñ8¾Ë¬ÄÀ2
+o
+java:S6204i"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ÛÒ•ü8¾Ë¬ÄÀ2
+k
+java:S1612i"NReplace this lambda with method reference 'ObjectMapping::mapUserEntityToDto'.(ÛÒ•ü8¾Ë¬ÄÀ2
+L	java:S106l"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¾Ë¬ÄÀ2
+L	java:S106x"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¾Ë¬ÄÀ2
+L	java:S106{"+Replace this use of System.out by a logger.(¨¶ÑÍşÿÿÿÿ8¥±®ÄÀ2
