@@ -11,6 +11,9 @@ import org.modelmapper.ConfigurationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -62,6 +65,21 @@ public class RoleServiceImpl implements RoleService {
         } catch (ConfigurationException e) {
             System.out.println(e);
             throw new CustomServiceException("Data could not be mapped for id : " + roleId);
+        }
+    }
+
+    @Override
+    public List<RoleDto> getAllRoles () {
+        try {
+            List<RoleEntity> roleEntities = this.roleRepo.findAll();
+            List<RoleDto> roleDtos = roleEntities.stream().map(roleEntity -> objectMapping.modelMapping(roleEntity, RoleDto.class)).collect(Collectors.toList());
+            return roleDtos;
+        } catch (DataAccessException e) {
+            System.out.println(e);
+            throw new CustomServiceException("Could not fetch data for roles");
+        } catch (ConfigurationException e) {
+            System.out.println(e);
+            throw new CustomServiceException("Data could not be mapped for roles");
         }
     }
 }

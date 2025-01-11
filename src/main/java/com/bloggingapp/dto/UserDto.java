@@ -27,7 +27,6 @@ public class UserDto {
     private String password;
     @NotEmpty(message = "About cannot be empty")
     private String about;
-    @NotEmpty
     private List<RoleDto> roleDtos;
 }
 

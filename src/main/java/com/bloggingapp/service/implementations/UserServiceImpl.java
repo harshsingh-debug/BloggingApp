@@ -1,28 +1,37 @@
 package com.bloggingapp.service.implementations;
 
 import com.bloggingapp.dto.UserDto;
+import com.bloggingapp.dto.UserRoleDto;
 import com.bloggingapp.entity.RoleEntity;
 import com.bloggingapp.entity.UserEntity;
 import com.bloggingapp.exception.CustomServiceException;
 import com.bloggingapp.exception.DataNotFoundException;
+import com.bloggingapp.repositories.RoleRepo;
 import com.bloggingapp.repositories.UserRepo;
 import com.bloggingapp.service.UserService;
 import com.bloggingapp.utils.ObjectMapping;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ConfigurationException;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final ObjectMapping objectMapping;
+    private final RoleRepo roleRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    UserServiceImpl(UserRepo userRepo, ObjectMapping objectMapping) {
+    UserServiceImpl(UserRepo userRepo, ObjectMapping objectMapping, PasswordEncoder passwordEncoder, RoleRepo roleRepo) {
         this.userRepo = userRepo;
         this.objectMapping = objectMapping;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepo = roleRepo;
     }
 
     public UserDto createNewUser(UserDto userDto) {
@@ -33,6 +42,8 @@ public class UserServiceImpl implements UserService {
             try {
                 UserEntity userEntity = this.objectMapping.modelMapping(userDto, UserEntity.class);
                 userId = userEntity.getId();
+                String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
+                userEntity.setPassword(encodedPassword);
                 return this.objectMapping.modelMapping(this.userRepo.save(userEntity), UserDto.class);
             } catch (DataAccessException var4) {
                 System.out.println(var4);
@@ -58,7 +69,8 @@ public class UserServiceImpl implements UserService {
                 }
 
                 if (userDto.getPassword() != null) {
-                    userEntity.setPassword(userDto.getPassword());
+                    String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+                    userEntity.setPassword(encodedPassword);
                 }
 
                 if (userDto.getEmail() != null) {
@@ -68,13 +80,6 @@ public class UserServiceImpl implements UserService {
                 if (userDto.getAbout() != null) {
                     userEntity.setAbout(userDto.getAbout());
                 }
-
-//                if (!userDto.getRoleDtos().isEmpty()) {
-//                    userDto.getRoleDtos().stream().forEach(roleDto -> {
-//                        RoleEntity roleEntity = objectMapping.modelMapping(roleDto, RoleEntity.class);
-//                        userEntity.getRoles().add(roleEntity);
-//                    });
-//                }
 
                 return this.objectMapping.modelMapping(this.userRepo.save(userEntity), UserDto.class);
             } catch (DataAccessException var4) {
@@ -146,6 +151,32 @@ public class UserServiceImpl implements UserService {
             throw new CustomServiceException("Could not fetch data for id : " + userId);
         } catch (ConfigurationException var5) {
             System.out.println(var5);
+            throw new CustomServiceException("Data could not be mapped for id : " + userId);
+        }
+    }
+
+    public UserDto updateUserRole (Integer userId, UserRoleDto userRoleDto) {
+        if (userId <= 0 || userRoleDto == null) {
+            throw new IllegalArgumentException("Data provided is incorrect");
+        }
+        try {
+            UserEntity userEntity = this.userRepo.findById(userId).orElseThrow(() -> new DataNotFoundException(userId, "No data found for id : " + userId));
+            List<Integer> roleIds = userRoleDto.getRoleIds();
+            List<RoleEntity> userRoles = new ArrayList<>();
+            roleIds.stream().forEach(roleId -> {
+                RoleEntity roleEntity = this.roleRepo.findById(roleId).orElseThrow(() -> new DataNotFoundException(roleId, "No data found for id : " + roleId));
+                userRoles.add(roleEntity);
+            });
+            userEntity.setRoles(userRoles);
+            return objectMapping.modelMapping(this.userRepo.save(userEntity), UserDto.class);
+        } catch (DataAccessException e) {
+            System.out.println(e);
+            throw new CustomServiceException("Unable to save data for id : " + userId);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            System.out.println(e);
+            throw new CustomServiceException("Some data is missing for id : " + userId);
+        } catch (ConfigurationException e) {
+            System.out.println(e);
             throw new CustomServiceException("Data could not be mapped for id : " + userId);
         }
     }
