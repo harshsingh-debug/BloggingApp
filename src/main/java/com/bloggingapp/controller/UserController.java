@@ -1,6 +1,7 @@
 package com.bloggingapp.controller;
 
 import com.bloggingapp.dto.UserDto;
+import com.bloggingapp.dto.UserRoleDto;
 import com.bloggingapp.service.UserService;
 import com.bloggingapp.service.implementations.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -53,5 +54,11 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") Integer userId) {
         String response = this.userService.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/updateUser/role/{userId}")
+    public ResponseEntity<UserDto> updateRoleForUser (@PathVariable("userId") Integer userId, @RequestBody UserRoleDto userRoleDto) {
+        UserDto userDto = this.userService.updateUserRole(userId, userRoleDto);
+        return ResponseEntity.status(HttpStatus.OK).body(userDto);
     }
 }

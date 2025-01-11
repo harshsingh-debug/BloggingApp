@@ -1,6 +1,8 @@
 package com.bloggingapp.service;
 
 import com.bloggingapp.dto.UserDto;
+import com.bloggingapp.dto.UserRoleDto;
+
 import java.util.List;
 
 public interface UserService {
@@ -13,4 +15,6 @@ public interface UserService {
     List<UserDto> getAllUsers();
 
     String deleteUser(Integer userId);
+
+    UserDto updateUserRole(Integer userId, UserRoleDto userRoleDto);
 }

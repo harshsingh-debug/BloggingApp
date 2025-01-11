@@ -30,6 +30,7 @@ public class UserEntity implements UserDetails{
     private String about;
     @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @Column(name = "posts")
+    @ToString.Exclude
     private List<PostEntity> postEntities = new ArrayList();
 
     @ManyToMany (cascade = CascadeType.ALL, fetch = FetchType.EAGER)

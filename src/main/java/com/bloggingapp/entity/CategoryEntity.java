@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public class CategoryEntity {
     private String categoryTitle;
     @Column(name = "description")
     private String categoryDescription;
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Column(name = "posts")
+    @ToString.Exclude
     private List<PostEntity> postEntities = new ArrayList();
 }

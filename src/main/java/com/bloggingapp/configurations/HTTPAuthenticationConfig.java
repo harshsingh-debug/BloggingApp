@@ -14,9 +14,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class HTTPAuthenticationConfig {
 
     private CustomUserDetailService customeUserDetailService;
+    private PasswordEncoder passwordEncoder;
 
-    public HTTPAuthenticationConfig (CustomUserDetailService customeUserDetailService) {
+    public HTTPAuthenticationConfig (CustomUserDetailService customeUserDetailService, PasswordEncoder passwordEncoder) {
         this.customeUserDetailService = customeUserDetailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
@@ -34,18 +36,8 @@ public class HTTPAuthenticationConfig {
         return httpSecurity
                 .getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(this.customeUserDetailService)
-                .passwordEncoder(this.passwordEncoder())
+                .passwordEncoder(this.passwordEncoder)
                 .and()
                 .build();
-    }
-
-//    @Override
-//    protected void conigure (AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder.userDetailsService(customeUserDetailService).passwordEncoder(this.passwordEncoder());
-//    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder () {
-        return new BCryptPasswordEncoder();
     }
 }

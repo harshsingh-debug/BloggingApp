@@ -7,6 +7,7 @@ import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "posts")
@@ -25,10 +26,13 @@ public class PostEntity {
     private String imageName;
     private Date postDate;
     @ManyToOne
+    @ToString.Exclude
     private CategoryEntity category;
     @ManyToOne
+    @ToString.Exclude
     private UserEntity user;
 
     @OneToMany (cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<CommentEntity> comments = new ArrayList<>();
 }
